@@ -74,6 +74,7 @@ public final class FeatureBuildItem extends MultiBuildItem {
     public static final String UNDERTOW_WEBSOCKETS = "undertow-websockets";
     public static final String VERTX = "vertx";
     public static final String VERTX_WEB = "vertx-web";
+    public static final String CXF_JAXRS = "cxf-jaxrs";
 
     private final String info;
 
