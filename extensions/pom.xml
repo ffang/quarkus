@@ -107,6 +107,7 @@
 
         <!-- kogito -->
         <module>kogito</module>
+        <module>cxf-jaxrs</module>
     </modules>
 
     <build>

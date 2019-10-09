@@ -400,7 +400,11 @@
                 <artifactId>quarkus-integration-test-shared-library</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>io.quarkus</groupId>
+                <artifactId>quarkus-cxf-jaxrs-deployment</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>
