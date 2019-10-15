@@ -47,6 +47,7 @@ public class CXFJaxrsQuarkusServlet extends CXFNonSpringServlet {
 
     @Override
     public void loadBus(ServletConfig servletConfig) {
+        LOGGER.info("=======try to load bus");
         super.loadBus(servletConfig);
 
         // You could add the endpoint publish codes here
@@ -57,6 +58,9 @@ public class CXFJaxrsQuarkusServlet extends CXFNonSpringServlet {
         JAXRSServerFactoryBean factory = new JAXRSServerFactoryBean();
         factory.setBus(bus);
 
+        if (WEB_SERVICES.size() == 0) {
+            WEB_SERVICES.add(new WebServiceConfig("/cxf-jaxrs", "io.quarkus.cxf.jaxrs.it.CxfJaxrsResource"));
+        }
         for (WebServiceConfig config : WEB_SERVICES) {
             try {
                 Class<?> serviceClass = Thread.currentThread().getContextClassLoader().loadClass(config.getClassName());
@@ -72,6 +76,7 @@ public class CXFJaxrsQuarkusServlet extends CXFNonSpringServlet {
     }
 
     public static void publish(String path, String webService) {
+        LOGGER.info("=======service published " + webService);
         WEB_SERVICES.add(new WebServiceConfig(path, webService));
     }
 }

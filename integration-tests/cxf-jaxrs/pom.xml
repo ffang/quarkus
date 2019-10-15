@@ -14,9 +14,13 @@
     <name>Quarkus - CXF JAXRS - Integration Test</name>
 
     <dependencies>
-        <dependency>
+        <!--dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-resteasy</artifactId>
+        </dependency-->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-jackson</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -93,15 +97,20 @@
                                     <goal>native-image</goal>
                                 </goals>
                                 <configuration>
-                                    <reportErrorsAtRuntime>false</reportErrorsAtRuntime>
                                     <cleanupServer>true</cleanupServer>
-                                    <enableHttpsUrlHandler>true</enableHttpsUrlHandler>
-                                    <enableServer>false</enableServer>
-                                    <dumpProxies>false</dumpProxies>
+                                    <enableHttpUrlHandler>true</enableHttpUrlHandler>
                                     <graalvmHome>${graalvmHome}</graalvmHome>
-                                    <enableJni>true</enableJni>
-                                    <enableAllSecurityServices>true</enableAllSecurityServices>
-                                    <disableReports>true</disableReports>
+                                    <additionalBuildArgs>
+                                        <additionalBuildArg>
+                                            --allow-incomplete-classpath
+                                        </additionalBuildArg>
+                                        <additionalBuildArg>
+                                            --report-unsupported-elements-at-runtime
+                                        </additionalBuildArg>
+                                        <additionalBuildArg>
+                                            -H:ReflectionConfigurationFiles=${project.basedir}/reflection-config.json
+                                        </additionalBuildArg>
+                                    </additionalBuildArgs>
                                 </configuration>
                             </execution>
                         </executions>

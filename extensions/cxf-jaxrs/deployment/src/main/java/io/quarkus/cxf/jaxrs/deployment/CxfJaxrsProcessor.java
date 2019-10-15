@@ -9,6 +9,8 @@ import org.jboss.jandex.AnnotationInstance;
 import org.jboss.jandex.AnnotationTarget;
 import org.jboss.jandex.DotName;
 import org.jboss.jandex.IndexView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.quarkus.arc.deployment.BeanArchiveIndexBuildItem;
 import io.quarkus.arc.deployment.UnremovableBeanBuildItem;
@@ -27,6 +29,8 @@ import io.quarkus.undertow.deployment.ServletBuildItem;
 import io.quarkus.undertow.deployment.ServletInitParamBuildItem;
 
 class CxfJaxrsProcessor {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CxfJaxrsProcessor.class);
 
     private static final String JAX_RS_CXF_SERVLET = "org.apache.cxf.transport.servlet.CXFNonSpringServlet";
 
@@ -72,6 +76,9 @@ class CxfJaxrsProcessor {
             BuildProducer<ServletInitParamBuildItem> servletInitParameters) throws Exception {
         feature.produce(new FeatureBuildItem(FeatureBuildItem.CXF_JAXRS));
 
+        LOGGER.info("======>build steps");
+        LOGGER.info("=====>" + org.apache.cxf.phase.PhaseManager.class.getName());
+
         if (cxfServerConfig.isPresent()) {
             String path = cxfServerConfig.get().getPath();
 
@@ -85,6 +92,7 @@ class CxfJaxrsProcessor {
             }
 
             for (Entry<String, String> webServicesByPath : cxfConfig.webServicesPaths.entrySet()) {
+                LOGGER.info("======>Found Rest services");
                 CXFJaxrsQuarkusServlet.publish(webServicesByPath.getKey(), webServicesByPath.getValue());
             }
         }
