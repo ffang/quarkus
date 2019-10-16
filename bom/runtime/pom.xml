@@ -150,7 +150,7 @@
         <mongo-client.version>3.10.2</mongo-client.version>
         <mongo-reactivestreams-client.version>1.11.0</mongo-reactivestreams-client.version>
         <artemis.version>2.10.0</artemis.version>
-        <cxf.version>3.4.0-SNAPSHOT</cxf.version>
+        <cxf.version>3.3.3</cxf.version>
         <!-- Used for integration tests, to make sure webjars work-->
         <bootstrap.version>3.1.0</bootstrap.version>
         <keycloak.version>6.0.1</keycloak.version>
