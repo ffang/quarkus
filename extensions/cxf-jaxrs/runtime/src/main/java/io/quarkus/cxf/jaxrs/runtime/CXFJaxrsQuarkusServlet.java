@@ -45,24 +45,16 @@ public class CXFJaxrsQuarkusServlet extends CXFNonSpringServlet {
 
     private static final List<WebServiceConfig> WEB_SERVICES = new ArrayList<>();
 
-    @Override
-    public void loadBus(ServletConfig servletConfig) {
-        LOGGER.info("=======try to load bus");
-        super.loadBus(servletConfig);
+    private static Bus myBus;
 
-        // You could add the endpoint publish codes here
-        Bus bus = getBus();
-        BusFactory.setDefaultBus(bus);
+    public static void createServices() {
+        LOGGER.info("=======try to createServices");
+        myBus = BusFactory.newInstance().createBus();
+        BusFactory.setDefaultBus(myBus);
 
-        // You can als use the simple frontend API to do this
         JAXRSServerFactoryBean factory = new JAXRSServerFactoryBean();
-        factory.setBus(bus);
+        factory.setBus(myBus);
 
-        /*
-         * if (WEB_SERVICES.size() == 0) {
-         * WEB_SERVICES.add(new WebServiceConfig("/cxf-jaxrs", "io.quarkus.cxf.jaxrs.it.CxfJaxrsResource"));
-         * }
-         */
         for (WebServiceConfig config : WEB_SERVICES) {
             try {
                 Class<?> serviceClass = Thread.currentThread().getContextClassLoader().loadClass(config.getClassName());
@@ -75,6 +67,32 @@ public class CXFJaxrsQuarkusServlet extends CXFNonSpringServlet {
                 LOGGER.error("Cannot initialize " + config.toString(), e);
             }
         }
+    }
+
+    @Override
+    public void loadBus(ServletConfig servletConfig) {
+        LOGGER.info("=======try to load bus");
+        bus = myBus;
+        /*
+         * bus = BusFactory.newInstance().createBus();
+         * BusFactory.setDefaultBus(bus);
+         * 
+         * JAXRSServerFactoryBean factory = new JAXRSServerFactoryBean();
+         * factory.setBus(bus);
+         * 
+         * for (WebServiceConfig config : WEB_SERVICES) {
+         * try {
+         * Class<?> serviceClass = Thread.currentThread().getContextClassLoader().loadClass(config.getClassName());
+         * 
+         * factory.setServiceClass(serviceClass);
+         * factory.setAddress(config.getPath());
+         * factory.create();
+         * LOGGER.info(config.toString() + " available.");
+         * } catch (ClassNotFoundException e) {
+         * LOGGER.error("Cannot initialize " + config.toString(), e);
+         * }
+         * }
+         */
     }
 
     public static void publish(String path, String webService) {
