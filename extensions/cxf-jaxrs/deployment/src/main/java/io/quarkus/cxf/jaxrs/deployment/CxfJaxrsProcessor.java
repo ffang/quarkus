@@ -15,8 +15,11 @@ import org.slf4j.LoggerFactory;
 import io.quarkus.arc.deployment.BeanArchiveIndexBuildItem;
 import io.quarkus.arc.deployment.UnremovableBeanBuildItem;
 import io.quarkus.cxf.jaxrs.runtime.CXFJaxrsQuarkusServlet;
+import io.quarkus.cxf.jaxrs.runtime.ServiceImplRecorder;
 import io.quarkus.deployment.annotations.BuildProducer;
 import io.quarkus.deployment.annotations.BuildStep;
+import io.quarkus.deployment.annotations.ExecutionTime;
+import io.quarkus.deployment.annotations.Record;
 import io.quarkus.deployment.builditem.BytecodeTransformerBuildItem;
 import io.quarkus.deployment.builditem.CombinedIndexBuildItem;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
@@ -77,12 +80,12 @@ class CxfJaxrsProcessor {
         feature.produce(new FeatureBuildItem(FeatureBuildItem.CXF_JAXRS));
 
         LOGGER.info("======>build steps");
-        LOGGER.info("=====>" + org.apache.cxf.phase.PhaseManager.class.getName());
 
         if (cxfServerConfig.isPresent()) {
             String path = cxfServerConfig.get().getPath();
 
             String mappingPath = getMappingPath(path);
+
             servlet.produce(ServletBuildItem.builder(JAX_RS_CXF_SERVLET, CXFJaxrsQuarkusServlet.class.getName())
                     .setLoadOnStartup(1).addMapping(mappingPath).setAsyncSupported(true).build());
             reflectiveClass.produce(new ReflectiveClassBuildItem(false, false, CXFJaxrsQuarkusServlet.class.getName()));
@@ -91,11 +94,13 @@ class CxfJaxrsProcessor {
                 servletInitParameters.produce(new ServletInitParamBuildItem(initParameter.getKey(), initParameter.getValue()));
             }
 
-            for (Entry<String, String> webServicesByPath : cxfConfig.webServicesPaths.entrySet()) {
-                LOGGER.info("======>Found Rest services");
-                CXFJaxrsQuarkusServlet.publish(webServicesByPath.getKey(), webServicesByPath.getValue());
-            }
         }
+    }
+
+    @Record(ExecutionTime.STATIC_INIT)
+    @BuildStep
+    public void buildServiceImplList(ServiceImplRecorder recorder) {
+        recorder.addJaxrsService(cxfConfig.webServicesPaths);
     }
 
     private String getMappingPath(String path) {
