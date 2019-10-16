@@ -58,9 +58,11 @@ public class CXFJaxrsQuarkusServlet extends CXFNonSpringServlet {
         JAXRSServerFactoryBean factory = new JAXRSServerFactoryBean();
         factory.setBus(bus);
 
-        if (WEB_SERVICES.size() == 0) {
-            WEB_SERVICES.add(new WebServiceConfig("/cxf-jaxrs", "io.quarkus.cxf.jaxrs.it.CxfJaxrsResource"));
-        }
+        /*
+         * if (WEB_SERVICES.size() == 0) {
+         * WEB_SERVICES.add(new WebServiceConfig("/cxf-jaxrs", "io.quarkus.cxf.jaxrs.it.CxfJaxrsResource"));
+         * }
+         */
         for (WebServiceConfig config : WEB_SERVICES) {
             try {
                 Class<?> serviceClass = Thread.currentThread().getContextClassLoader().loadClass(config.getClassName());
