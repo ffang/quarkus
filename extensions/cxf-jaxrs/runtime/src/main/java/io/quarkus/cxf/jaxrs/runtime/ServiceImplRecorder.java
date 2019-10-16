@@ -12,7 +12,10 @@ public class ServiceImplRecorder {
         for (Entry<String, String> webServicesByPath : webServicesPaths.entrySet()) {
 
             CXFJaxrsQuarkusServlet.publish(webServicesByPath.getKey(), webServicesByPath.getValue());
+
         }
+
+        CXFJaxrsQuarkusServlet.createServices();
     }
 
 }

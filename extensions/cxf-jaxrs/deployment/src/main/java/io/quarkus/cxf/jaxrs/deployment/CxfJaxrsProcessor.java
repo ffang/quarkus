@@ -100,6 +100,7 @@ class CxfJaxrsProcessor {
     @Record(ExecutionTime.STATIC_INIT)
     @BuildStep
     public void buildServiceImplList(ServiceImplRecorder recorder) {
+        LOGGER.info("=====invoke recorder");
         recorder.addJaxrsService(cxfConfig.webServicesPaths);
     }
 
