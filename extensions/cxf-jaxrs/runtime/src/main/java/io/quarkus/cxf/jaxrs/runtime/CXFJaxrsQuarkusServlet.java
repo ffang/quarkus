@@ -73,26 +73,6 @@ public class CXFJaxrsQuarkusServlet extends CXFNonSpringServlet {
     public void loadBus(ServletConfig servletConfig) {
         LOGGER.info("=======try to load bus");
         bus = myBus;
-        /*
-         * bus = BusFactory.newInstance().createBus();
-         * BusFactory.setDefaultBus(bus);
-         * 
-         * JAXRSServerFactoryBean factory = new JAXRSServerFactoryBean();
-         * factory.setBus(bus);
-         * 
-         * for (WebServiceConfig config : WEB_SERVICES) {
-         * try {
-         * Class<?> serviceClass = Thread.currentThread().getContextClassLoader().loadClass(config.getClassName());
-         * 
-         * factory.setServiceClass(serviceClass);
-         * factory.setAddress(config.getPath());
-         * factory.create();
-         * LOGGER.info(config.toString() + " available.");
-         * } catch (ClassNotFoundException e) {
-         * LOGGER.error("Cannot initialize " + config.toString(), e);
-         * }
-         * }
-         */
     }
 
     public static void publish(String path, String webService) {
