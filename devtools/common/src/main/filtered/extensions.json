@@ -601,5 +601,18 @@
     "groupId": "io.quarkus",
     "artifactId": "quarkus-vertx",
     "guide": "https://quarkus.io/guides/using-vertx"
+  },
+  {
+    "name": "CXF JAXRS",
+    "shortName": "jax-rs",
+    "labels": [
+      "cxf",
+      "jaxrs",
+      "web",
+      "rest"
+    ],
+    "groupId": "io.quarkus",
+    "artifactId": "quarkus-cxf-jaxrs",
+    "guide": "https://quarkus.io/guides/cxf-jaxrs-guide"
   }
 ]
