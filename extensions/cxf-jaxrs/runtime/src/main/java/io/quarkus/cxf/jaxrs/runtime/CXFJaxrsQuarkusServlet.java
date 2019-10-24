@@ -2,17 +2,20 @@ package io.quarkus.cxf.jaxrs.runtime;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import javax.enterprise.inject.spi.Bean;
+import javax.enterprise.inject.spi.BeanManager;
+import javax.enterprise.inject.spi.CDI;
 import javax.servlet.ServletConfig;
 
 import org.apache.cxf.Bus;
-import org.apache.cxf.BusFactory;
+import org.apache.cxf.cdi.CXFCdiServlet;
 import org.apache.cxf.jaxrs.JAXRSServerFactoryBean;
-import org.apache.cxf.transport.servlet.CXFNonSpringServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CXFJaxrsQuarkusServlet extends CXFNonSpringServlet {
+public class CXFJaxrsQuarkusServlet extends CXFCdiServlet {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CXFJaxrsQuarkusServlet.class);
 
@@ -49,11 +52,62 @@ public class CXFJaxrsQuarkusServlet extends CXFNonSpringServlet {
 
     public static void createServices() {
         LOGGER.info("=======try to createServices");
-        myBus = BusFactory.newInstance().createBus();
-        BusFactory.setDefaultBus(myBus);
+        /*
+         * final BeanManager beanManager = null; //CDI.current().getBeanManager();
+         * if (beanManager != null) {
+         * final Set<Bean<?>> candidates = beanManager.getBeans("cxf");
+         * 
+         * if (!candidates.isEmpty()) {
+         * final Bean<?> candidate = beanManager.resolve(candidates);
+         * 
+         * myBus = (Bus) beanManager.getReference(candidate, Bus.class,
+         * beanManager.createCreationalContext(candidate));
+         * }
+         * }
+         * 
+         * if (myBus == null) {
+         * myBus = BusFactory.newInstance().createBus();
+         * }
+         * 
+         * BusFactory.setDefaultBus(myBus);
+         * 
+         * JAXRSServerFactoryBean factory = new JAXRSServerFactoryBean();
+         * factory.setBus(myBus);
+         * 
+         * for (WebServiceConfig config : WEB_SERVICES) {
+         * try {
+         * Class<?> serviceClass = Thread.currentThread().getContextClassLoader().loadClass(config.getClassName());
+         * 
+         * factory.setServiceClass(serviceClass);
+         * factory.setAddress(config.getPath());
+         * factory.create();
+         * LOGGER.info(config.toString() + " available.");
+         * } catch (ClassNotFoundException e) {
+         * LOGGER.error("Cannot initialize " + config.toString(), e);
+         * }
+         * }
+         */
+    }
 
+    @Override
+    public void loadBus(ServletConfig servletConfig) {
+        LOGGER.info("=======try to load bus");
+        final BeanManager beanManager = CDI.current().getBeanManager();
+        if (beanManager != null) {
+            final Set<Bean<?>> candidates = beanManager.getBeans("cxf");
+
+            if (!candidates.isEmpty()) {
+                final Bean<?> candidate = beanManager.resolve(candidates);
+
+                myBus = (Bus) beanManager.getReference(candidate, Bus.class,
+                        beanManager.createCreationalContext(candidate));
+            }
+        }
+
+        bus = myBus;
+        super.loadBus(servletConfig);
         JAXRSServerFactoryBean factory = new JAXRSServerFactoryBean();
-        factory.setBus(myBus);
+        factory.setBus(bus);
 
         for (WebServiceConfig config : WEB_SERVICES) {
             try {
@@ -67,12 +121,6 @@ public class CXFJaxrsQuarkusServlet extends CXFNonSpringServlet {
                 LOGGER.error("Cannot initialize " + config.toString(), e);
             }
         }
-    }
-
-    @Override
-    public void loadBus(ServletConfig servletConfig) {
-        LOGGER.info("=======try to load bus");
-        bus = myBus;
     }
 
     public static void publish(String path, String webService) {

@@ -137,52 +137,6 @@
                     </executions>
                 </plugin>
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-enforcer-plugin</artifactId>
-                    <executions>
-                        <execution>
-                            <id>enforce</id>
-                            <configuration>
-                                <rules>
-                                    <dependencyConvergence/>
-                                    <requireMavenVersion>
-                                        <version>${supported-maven-versions}</version>
-                                    </requireMavenVersion>
-                                    <bannedDependencies>
-                                        <excludes>
-                                            <!-- Use javax.annotation-api -->
-                                            <exclude>org.jboss.spec.javax.annotation:jboss-annotations-api_1.2_spec
-                                            </exclude>
-                                            <exclude>org.jboss.spec.javax.annotation:jboss-annotations-api_1.3_spec
-                                            </exclude>
-                                            <!-- use our jboss-logmanager -->
-                                            <exclude>org.jboss.logging:jboss-logmanager</exclude>
-                                            <!-- We don't want all the API's in one jar-->
-                                            <exclude>javax:javaee-api</exclude>
-                                            <!-- Prevent incompatible config from coming in -->
-                                            <exclude>org.wildfly.client:wildfly-client-config</exclude>
-                                            <!-- Use Jakarta Activation -->
-                                            <exclude>javax.activation:javax-activation-api</exclude>
-                                            <exclude>javax.activation:activation</exclude>
-                                            <exclude>org.jboss.marshalling:jboss-marshalling-osgi</exclude>
-                                            <exclude>org.jboss.spec.javax.servlet:jboss-servlet-api_3.1_spec</exclude>
-                                            <!-- The API is packaged by the implementation-->
-                                            <exclude>javax.json:javax.json-api</exclude>
-                                            <!-- Do not use Jakarta APIs for JSON -->
-                                            <exclude>org.glassfish:jakarta.json</exclude>
-                                            <exclude>jakarta.json.bind:jakarta.json.bind-api</exclude>
-                                            <exclude>jakarta.json:jakarta.json-api</exclude>
-                                        </excludes>
-                                    </bannedDependencies>
-                                </rules>
-                            </configuration>
-                            <goals>
-                                <goal>enforce</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
                     <groupId>io.fabric8</groupId>
                     <artifactId>docker-maven-plugin</artifactId>
                     <version>0.29.0</version>
