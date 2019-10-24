@@ -15,6 +15,8 @@ import org.apache.cxf.jaxrs.JAXRSServerFactoryBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
+
 public class CXFJaxrsQuarkusServlet extends CXFCdiServlet {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CXFJaxrsQuarkusServlet.class);
@@ -114,6 +116,7 @@ public class CXFJaxrsQuarkusServlet extends CXFCdiServlet {
                 Class<?> serviceClass = Thread.currentThread().getContextClassLoader().loadClass(config.getClassName());
 
                 factory.setServiceClass(serviceClass);
+                factory.setProvider(new JacksonJsonProvider());
                 factory.setAddress(config.getPath());
                 factory.create();
                 LOGGER.info(config.toString() + " available.");
