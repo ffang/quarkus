@@ -14,6 +14,8 @@ import org.apache.cxf.transport.servlet.CXFNonSpringServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
+
 public class CXFJaxrsQuarkusServlet extends CXFNonSpringServlet {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CXFJaxrsQuarkusServlet.class);
@@ -69,6 +71,7 @@ public class CXFJaxrsQuarkusServlet extends CXFNonSpringServlet {
 
                 factory.setServiceClass(serviceClass);
                 factory.setAddress(config.getPath());
+                factory.setProvider(new JacksonJsonProvider());
                 factory.create();
                 LOGGER.info(config.toString() + " available.");
             } catch (ClassNotFoundException e) {
