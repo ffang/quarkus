@@ -1,5 +1,6 @@
 package io.quarkus.cxf.jaxrs.runtime;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import javax.servlet.ServletConfig;
 
 import org.apache.cxf.Bus;
 import org.apache.cxf.BusFactory;
+import org.apache.cxf.bus.spring.SpringBusFactory;
 import org.apache.cxf.jaxrs.JAXRSServerFactoryBean;
 import org.apache.cxf.transport.servlet.CXFNonSpringServlet;
 import org.slf4j.Logger;
@@ -47,9 +49,15 @@ public class CXFJaxrsQuarkusServlet extends CXFNonSpringServlet {
 
     private static Bus myBus;
 
-    public static void createServices() {
+    public static void createServices(String springBus) {
         LOGGER.info("=======try to createServices");
-        myBus = BusFactory.newInstance().createBus();
+        if (springBus != null && springBus.length() > 0) {
+            SpringBusFactory bf = new SpringBusFactory();
+            URL busFile = CXFJaxrsQuarkusServlet.class.getClassLoader().getResource(springBus);
+            myBus = bf.createBus(busFile.toString());
+        } else {
+            myBus = BusFactory.newInstance().createBus();
+        }
         BusFactory.setDefaultBus(myBus);
 
         JAXRSServerFactoryBean factory = new JAXRSServerFactoryBean();

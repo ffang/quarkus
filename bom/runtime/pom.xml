@@ -119,6 +119,7 @@
         <reactive-streams.version>1.0.3</reactive-streams.version>
         <test-containers.version>1.12.0</test-containers.version>
         <jboss-logging.version>3.3.2.Final</jboss-logging.version>
+        <jboss-vfs.version>3.2.14.Final</jboss-vfs.version>
         <axle-client.version>0.0.10</axle-client.version>
         <kafka-clients.version>2.2.1</kafka-clients.version>
         <kafka2.version>2.2.1</kafka2.version>
@@ -711,6 +712,11 @@
                 <groupId>org.jboss.logging</groupId>
                 <artifactId>commons-logging-jboss-logging</artifactId>
                 <version>${commons-logging-jboss-logging.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss</groupId>
+                <artifactId>jboss-vfs</artifactId>
+                <version>${jboss-vfs.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jboss.logmanager</groupId>

@@ -101,7 +101,7 @@ class CxfJaxrsProcessor {
     @BuildStep
     public void buildServiceImplList(ServiceImplRecorder recorder) {
         LOGGER.info("=====invoke recorder");
-        recorder.addJaxrsService(cxfConfig.webServicesPaths);
+        recorder.addJaxrsService(cxfConfig.webServicesPaths, cxfConfig.springBus);
     }
 
     private String getMappingPath(String path) {

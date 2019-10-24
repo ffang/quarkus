@@ -8,14 +8,14 @@ import io.quarkus.runtime.annotations.Recorder;
 @Recorder
 public class ServiceImplRecorder {
 
-    public void addJaxrsService(Map<String, String> webServicesPaths) {
+    public void addJaxrsService(Map<String, String> webServicesPaths, String springBus) {
         for (Entry<String, String> webServicesByPath : webServicesPaths.entrySet()) {
 
             CXFJaxrsQuarkusServlet.publish(webServicesByPath.getKey(), webServicesByPath.getValue());
 
         }
 
-        CXFJaxrsQuarkusServlet.createServices();
+        CXFJaxrsQuarkusServlet.createServices(springBus);
     }
 
 }

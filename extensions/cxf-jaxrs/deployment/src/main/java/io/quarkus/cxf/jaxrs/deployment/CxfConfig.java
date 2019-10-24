@@ -16,6 +16,12 @@ final class CxfConfig {
     String path;
 
     /**
+     * Set a spring configuration file which can be used to initialize a CXF spring bus
+     */
+    @ConfigItem(defaultValue = "", name = "springbus")
+    String springBus;
+
+    /**
      * Choose the path of each jaxrs web services.
      */
     @ConfigItem(name = "webservice")
